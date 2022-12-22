@@ -1,2 +1,0 @@
-def oi():
-    print('salve')
