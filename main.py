@@ -5,6 +5,7 @@ from fp.fp import FreeProxy
 from fake_useragent import UserAgent
 from selenium.webdriver.common.by import By
 from Virtuais.CorridasPlayford import CorridasPlayford
+from Virtuais.Futebol import Futebol
 from help.calculoDutching import Dutching
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -80,10 +81,14 @@ betano = Betano()
 betano.abrirSite()
 betano.fecharAd()
 betano.clicarVirtutais()
-
 dutching = Dutching()
-corridasPlayford = CorridasPlayford(betano.driver, dutching)
 
-corridasPlayford.clicarCorridasPlayFord()
+futebol = Futebol(driver=betano.driver, dutching=dutching)
+
+futebol.clicarCorridasPlayFord()
+
+# corridasPlayford = CorridasPlayford(betano.driver, dutching)
+#
+# corridasPlayford.clicarCorridasPlayFord()
 
 
