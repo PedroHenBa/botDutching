@@ -1,7 +1,10 @@
+from requests import Response
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from selenium.webdriver.common.by import By
 from help.getChildrens import getChildrens
+import requests
+import json
 
 class Futebol:
 
@@ -26,7 +29,6 @@ class Futebol:
                 "xpath": "/html/body/div[1]/div/section[2]/div[5]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[7]/div[2]/div/div",
                 "name": "Campeões"
             },
-
         ]
 
         self.SITE_MAP = {
@@ -36,7 +38,34 @@ class Futebol:
             }
         }
 
+
+    def retornaMelhorJogo(self, jogos):
+
+        melhorOdd = {
+            "name": '',
+            "totalPorcentagem": 99999999,
+            "timer": '',
+            "porcentagensWinning": '',
+            "valorApostaTotal": ''
+        }
+
+        for jogo in jogos:
+            if (jogo['totalPorcentagem'] < melhorOdd['totalPorcentagem']):
+                melhorOdd['totalPorcentagem'] = jogo['totalPorcentagem']
+                melhorOdd['timer'] = jogo['timer']
+                melhorOdd['porcentagensWinning'] = jogo['porcentagensWinning']
+                melhorOdd['valorApostaTotal'] = jogo['valorApostaTotal']
+                if "name" in jogo:
+                    melhorOdd['name'] = jogo['name']
+                else:
+                    melhorOdd['name'] = ''
+
+        return melhorOdd
+
     def clicarCorridasPlayFord(self):
+        valorApostaGratis = 100
+
+        melhoresJogos = []
 
         for game in self.GAMES:
             buttonPlayford = self.driver.find_element(By.XPATH, game["xpath"])
@@ -44,22 +73,55 @@ class Futebol:
             time.sleep(3)
             jogos = self.pegarTodasCorridas()
 
-            menorPorcentagem = 999999999
-            timer = ''
-            odds = []
+            melhorOdd = self.retornaMelhorJogo(jogos)
+            melhorOdd['name'] = game['name']
 
-            for jogo in jogos:
-                if (jogo['totalPorcentagem'] < menorPorcentagem):
-                    menorPorcentagem = jogo['totalPorcentagem']
-                    timer = jogo['timer']
-                    odds = jogo['porcentagensWinning']
-
-            print(game["name"])
-            print(menorPorcentagem)
-            print(timer)
-            print(*odds, sep='\n')
-            print('\n')
+            melhoresJogos.append(melhorOdd)
             time.sleep(2)
+
+        bestGame = self.retornaMelhorJogo(melhoresJogos)
+        get = "value=" + str(valorApostaGratis) + "&"
+
+        for gameEscolhido in bestGame['porcentagensWinning']:
+            get += "&odds[]="+str(gameEscolhido["odd"])
+
+        get += "&global_com=6.5&same_market=true&"
+
+        for i in range(1, len(bestGame['porcentagensWinning']) + 1):
+            get += "ids[]=value" + str(i) + "&"
+
+
+        res = requests.get('https://www.academiadasapostasbrasil.com/calculator/calc_dutching?' + get)
+
+        results = json.loads(res.text)
+
+        finalResult = {
+            'name': '',
+            'profit': 0,
+            'apostas': [],
+            'timer': '',
+            'totalPorcentagem': ''
+        }
+
+
+        for i in range(1, len(bestGame['porcentagensWinning']) + 1):
+            value = "#value" + str(i)
+            finalResult['apostas'].append({'valor': results['values'][value], 'odd': bestGame['porcentagensWinning'][i-1]['odd']})
+
+        finalResult['profit'] = results['profit_value']
+        finalResult['timer'] = bestGame['timer']
+        finalResult['totalPorcentagem'] = bestGame['totalPorcentagem']
+        finalResult['name'] = bestGame['name']
+
+        porcentagemDeGanho = (100 * (finalResult['profit'] + valorApostaGratis)) / valorApostaGratis
+
+
+        print("nome: " + finalResult['name'])
+        print("tempo: " + str(finalResult['timer']))
+        print("total perdido: " + str(finalResult['profit']))
+        print("porcentagem do valor total: " + str(porcentagemDeGanho))
+        print(*finalResult['apostas'], sep='\n')
+        print('\n')
 
 
 

@@ -30,14 +30,17 @@ class CorridasPlayford:
         menorPorcentagem = 999999999
         timer = ''
         odds = []
+        apostaTotal = ''
 
         for corrida in corridas:
             if(corrida['totalPorcentagem'] < menorPorcentagem):
                 menorPorcentagem = corrida['totalPorcentagem']
                 timer = corrida['timer']
                 odds = corrida['porcentagensWinning']
+                apostaTotal = corrida['valorApostaTotal']
 
         print("playford")
+        print(apostaTotal)
         print(menorPorcentagem)
         print(timer)
         print(*odds, sep='\n')
