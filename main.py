@@ -1,30 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import time
-from fp.fp import FreeProxy
-from fake_useragent import UserAgent
 from selenium.webdriver.common.by import By
 from Virtuais.CorridasPlayford import CorridasPlayford
 from Virtuais.Futebol import Futebol
 from help.calculoDutching import Dutching
 from selenium.webdriver.common.action_chains import ActionChains
 
-class Spoofer(object):
-    def __init__(self, country_id=['US'], rand=True, anonym=True):
-        self.country_id = country_id
-        self.rand = rand
-        self.anonym = anonym
-        self.userAgent, self.ip = self.get()
-
-    def get(self):
-        ua = UserAgent()
-        proxy = FreeProxy(country_id=self.country_id, rand=self.rand, anonym=self.anonym).get()
-        ip = proxy.split("://")[1]
-        return ua.random, ip
 
 class Betano:
     def __init__(self):
-        self.helperSpoofer = Spoofer()
         self.CHROME_OPTIONS = webdriver.ChromeOptions()
         self.CHROME_OPTIONS.add_experimental_option("detach", True)
         self.CHROME_OPTIONS.add_argument("--no-sandbox");
