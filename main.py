@@ -22,7 +22,7 @@ class Betano:
         self.SITE_MAP = {
             "buttons": {
                 "closeAd": {
-                    "xpath": "/html/body/div[1]/div/section[2]/div[7]/div/div/div[1]/button"
+                    "xpath": "/html/body/div[1]/div/section[2]/div[6]/div/div/div[1]/button"
                 },
                 "iniciarSessao": {
                     "xpath": "/html/body/div[1]/div/section[2]/section/header/div[1]/div[2]/div[4]/a[2]"

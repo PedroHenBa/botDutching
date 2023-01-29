@@ -14,19 +14,19 @@ class Futebol:
 
         self.GAMES = [
             {
-                "xpath": "/html/body/div[1]/div/section[2]/div[5]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div",
+                "xpath": "/html/body/div[1]/div/section[2]/div[4]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[2]/div[2]/div/div",
                 "name": "Copa"
             },
             {
-                "xpath": "/html/body/div[1]/div/section[2]/div[5]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[3]/div[2]/div/div",
+                "xpath": "/html/body/div[1]/div/section[2]/div[4]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[3]/div[2]/div/div",
                 "name": "Liga Americas"
             },
             {
-                "xpath": "/html/body/div[1]/div/section[2]/div[5]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[6]/div[2]/div/div",
+                "xpath": "/html/body/div[1]/div/section[2]/div[4]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[6]/div[2]/div/div",
                 "name": "Premier"
             },
             {
-                "xpath": "/html/body/div[1]/div/section[2]/div[5]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[7]/div[2]/div/div",
+                "xpath": "/html/body/div[1]/div/section[2]/div[4]/div[2]/section/section/div/div/div/div/div[1]/div/div[2]/div[7]/div[2]/div/div",
                 "name": "Campeões"
             },
         ]
@@ -50,7 +50,7 @@ class Futebol:
         }
 
         for jogo in jogos:
-            if (jogo['totalPorcentagem'] < melhorOdd['totalPorcentagem']):
+            if jogo['totalPorcentagem'] < melhorOdd['totalPorcentagem']:
                 melhorOdd['totalPorcentagem'] = jogo['totalPorcentagem']
                 melhorOdd['timer'] = jogo['timer']
                 melhorOdd['porcentagensWinning'] = jogo['porcentagensWinning']
@@ -63,7 +63,7 @@ class Futebol:
         return melhorOdd
 
     def clicarCorridasPlayFord(self):
-        valorApostaGratis = 100
+        valorApostaGratis = 60
 
         melhoresJogos = []
 
