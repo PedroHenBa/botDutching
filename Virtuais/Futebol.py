@@ -33,8 +33,8 @@ class Futebol:
 
         self.SITE_MAP = {
             "classes": {
-                "tempoJogos": "virtuals-event-box__timer",
-                "odds": "div.markets__market:nth-child(5) > div:nth-child(2) > div:nth-child(1) > div > div > button > span:nth-child(2)"
+                "tempoJogos": "div.swiper-slide > div > span",
+                "odds": "div.markets > span:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div > div > button > span:nth-child(2)"
             }
         }
 
@@ -63,7 +63,7 @@ class Futebol:
         return melhorOdd
 
     def clicarCorridasPlayFord(self):
-        valorApostaGratis = 60
+        valorApostaGratis = 120
 
         melhoresJogos = []
 
@@ -127,7 +127,7 @@ class Futebol:
 
     def pegarTodasCorridas(self):
         todasCorridas = []
-        corridas = self.driver.find_elements(By.CLASS_NAME, self.SITE_MAP["classes"]["tempoJogos"])
+        corridas = self.driver.find_elements(By.CSS_SELECTOR, self.SITE_MAP["classes"]["tempoJogos"])
 
         for corrida in corridas:
             self.driver.execute_script("arguments[0].click();", corrida)
